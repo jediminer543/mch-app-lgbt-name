@@ -21,29 +21,31 @@ typedef struct lgbt_flag {
 	struct lgbt_flag*	next;
 } lgbt_flag_t;
 
-pax_col_t gay[] = { 
-	pax_col_rgb(209, 34, 41), pax_col_rgb(246, 138, 30),
-	pax_col_rgb(253, 224, 26), pax_col_rgb(0, 121, 64),
-	pax_col_rgb(36, 64, 142), pax_col_rgb(115, 41, 130)
+#define const_pax_col_rgb(r, g, b) 0xff000000 | (r << 16) | (g << 8) | b
+
+const pax_col_t gay[] = { 
+	const_pax_col_rgb(209, 34, 41), const_pax_col_rgb(246, 138, 30),
+	const_pax_col_rgb(253, 224, 26), const_pax_col_rgb(0, 121, 64),
+	const_pax_col_rgb(36, 64, 142), const_pax_col_rgb(115, 41, 130)
 };
 
-pax_col_t les[] = { 
-	pax_col_rgb(213, 45, 0), pax_col_rgb(239, 118, 39),
-	pax_col_rgb(255, 154, 86), pax_col_rgb(255, 255, 255),
-	pax_col_rgb(209, 98, 164), pax_col_rgb(181, 86, 144),
-	pax_col_rgb(163, 2, 98)
+const pax_col_t les[] = { 
+	const_pax_col_rgb(213, 45, 0), const_pax_col_rgb(239, 118, 39),
+	const_pax_col_rgb(255, 154, 86), const_pax_col_rgb(255, 255, 255),
+	const_pax_col_rgb(209, 98, 164), const_pax_col_rgb(181, 86, 144),
+	const_pax_col_rgb(163, 2, 98)
 };
 
-pax_col_t tra[] = { 
-	pax_col_rgb(91, 206, 250),
-	pax_col_rgb(245, 169, 184),
-	pax_col_rgb(255, 255, 255)
+const pax_col_t tra[] = { 
+	const_pax_col_rgb(91, 206, 250),
+	const_pax_col_rgb(245, 169, 184),
+	const_pax_col_rgb(255, 255, 255)
 };
 
-pax_col_t bis[] = { 
-	pax_col_rgb(214, 2, 112),
-	pax_col_rgb(155, 79, 150),
-	pax_col_rgb(0, 56, 168)
+const pax_col_t bis[] = { 
+	const_pax_col_rgb(214, 2, 112),
+	const_pax_col_rgb(155, 79, 150),
+	const_pax_col_rgb(0, 56, 168)
 };
 
 lgbt_flag_t gay_flag_1 = { gay[5], 1, NULL };
