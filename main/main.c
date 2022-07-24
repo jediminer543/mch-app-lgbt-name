@@ -11,7 +11,7 @@
 #include "main.h"
 
 static pax_buf_t buf;
-xQueueHandle buttonQueue;
+xQueueHandle button_queue;
 
 typedef enum { LGBT_THEME_GAY = 0, LGBT_THEME_LES, LGBT_THEME_TRA, LGBT_THEME_BIS, LGBT_THEME_LAST } lgbt_theme_t;
 
@@ -48,37 +48,37 @@ const pax_col_t bis[] = {
 	const_pax_col_rgb(0, 56, 168)
 };
 
-lgbt_flag_t gay_flag_1 = { gay[5], 1, NULL };
-lgbt_flag_t gay_flag_2 = { gay[4], 1, &gay_flag_1 };
-lgbt_flag_t gay_flag_3 = { gay[3], 1, &gay_flag_2 };
-lgbt_flag_t gay_flag_4 = { gay[2], 1, &gay_flag_3 };
-lgbt_flag_t gay_flag_5 = { gay[1], 1, &gay_flag_4 };
-lgbt_flag_t gay_flag = { gay[0], 1, &gay_flag_5 };
+const lgbt_flag_t gay_flag_1 = { gay[5], 1, NULL };
+const lgbt_flag_t gay_flag_2 = { gay[4], 1, &gay_flag_1 };
+const lgbt_flag_t gay_flag_3 = { gay[3], 1, &gay_flag_2 };
+const lgbt_flag_t gay_flag_4 = { gay[2], 1, &gay_flag_3 };
+const lgbt_flag_t gay_flag_5 = { gay[1], 1, &gay_flag_4 };
+const lgbt_flag_t gay_flag = { gay[0], 1, &gay_flag_5 };
 
-lgbt_flag_t les_flag_1 = { les[6], 1, NULL };
-lgbt_flag_t les_flag_2 = { les[5], 1, &les_flag_1 };
-lgbt_flag_t les_flag_3 = { les[4], 1, &les_flag_2 };
-lgbt_flag_t les_flag_4 = { les[3], 1, &les_flag_3 };
-lgbt_flag_t les_flag_5 = { les[2], 1, &les_flag_4 };
-lgbt_flag_t les_flag_6 = { les[1], 1, &les_flag_5 };
-lgbt_flag_t les_flag = { les[0], 1, &les_flag_6 };
+const lgbt_flag_t les_flag_1 = { les[6], 1, NULL };
+const lgbt_flag_t les_flag_2 = { les[5], 1, &les_flag_1 };
+const lgbt_flag_t les_flag_3 = { les[4], 1, &les_flag_2 };
+const lgbt_flag_t les_flag_4 = { les[3], 1, &les_flag_3 };
+const lgbt_flag_t les_flag_5 = { les[2], 1, &les_flag_4 };
+const lgbt_flag_t les_flag_6 = { les[1], 1, &les_flag_5 };
+const lgbt_flag_t les_flag = { les[0], 1, &les_flag_6 };
 
-lgbt_flag_t tra_flag_1 = { tra[0], 1, NULL };
-lgbt_flag_t tra_flag_2 = { tra[1], 1, &tra_flag_1 };
-lgbt_flag_t tra_flag_3 = { tra[2], 1, &tra_flag_2 };
-lgbt_flag_t tra_flag_4 = { tra[1], 1, &tra_flag_3 };
-lgbt_flag_t tra_flag = { tra[0], 1, &tra_flag_4 };
+const lgbt_flag_t tra_flag_1 = { tra[0], 1, NULL };
+const lgbt_flag_t tra_flag_2 = { tra[1], 1, &tra_flag_1 };
+const lgbt_flag_t tra_flag_3 = { tra[2], 1, &tra_flag_2 };
+const lgbt_flag_t tra_flag_4 = { tra[1], 1, &tra_flag_3 };
+const lgbt_flag_t tra_flag = { tra[0], 1, &tra_flag_4 };
 
-lgbt_flag_t bis_flag_1 = { bis[2], 2, NULL };
-lgbt_flag_t bis_flag_2 = { bis[1], 1, &bis_flag_1 };
-lgbt_flag_t bis_flag = { bis[0], 2, &bis_flag_2 };
+const lgbt_flag_t bis_flag_1 = { bis[2], 2, NULL };
+const lgbt_flag_t bis_flag_2 = { bis[1], 1, &bis_flag_1 };
+const lgbt_flag_t bis_flag = { bis[0], 2, &bis_flag_2 };
 
 const lgbt_flag_t flags[] = {
 	gay_flag,
 	les_flag,
 	tra_flag,
 	bis_flag
-}
+};
 
 #include <esp_log.h>
 static const char *TAG = "MCH-LGBTQ-Nametag";
@@ -96,8 +96,9 @@ char* read_nickname() {
     size_t required = 0;
     res             = nvs_get_str(handle, "nickname", NULL, &required);
     if (res) {
-        ESP_LOGE(TAG, "Error reading nickname: %s", esp_err_to_name(res));
-        buffer = strdup("BADGE.TEAM");
+        //ESP_LOGE(TAG, "Error reading nickname: %s", esp_err_to_name(res));
+        //buffer = strdup("BADGE.TEAM");
+		buffer = "BADGE.TEAM";
     } else {
         buffer           = malloc(required + 1);
         buffer[required] = 0;
@@ -125,7 +126,7 @@ void exit_to_launcher() {
 void app_main() {
   
     
-    ESP_LOGI(TAG, "Welcome to the template app!");
+    //ESP_LOGI(TAG, "Welcome to the template app!");
 
     // Initialize the screen, the I2C and the SPI busses.
     bsp_init();
