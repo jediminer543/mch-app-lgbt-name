@@ -158,13 +158,13 @@ void app_main() {
         
         lgbt_flag_t current_flag = flags[theme];
 		int length = 0;
-		while (current_flag.next != NULL) { 
+		while (current_flag != NULL) { 
 			length += current_flag.count; current_flag = *current_flag.next; 
 		}
 		current_flag = flags[theme];
 		float step = screen_h/length;
 		float current_pos = 0;
-		while (current_flag.next != NULL) {
+		while (current_flag != NULL) {
 			pax_simple_rect(&buf, current_flag.color, 0, current_pos, screen_w, step*current_flag.count);
 			current_pos += step*current_flag.count;
 			current_flag = *current_flag.next;
