@@ -20,11 +20,9 @@ jobs:
       uses: espressif/esp-idf-ci-action@v1
       with:
         esp_idf_version: v4.4.1
-    - run: pwd
-    - run: ls
-    - run: ls /
+    - run: ls /build
     - name: 'Upload App Binary'
       uses: actions/upload-artifact@v3
       with:
         name: app-binary
-        path: app/build/main.bin
+        path: build/main.bin
