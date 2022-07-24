@@ -158,17 +158,17 @@ void app_main() {
         
         lgbt_flag_t current_flag = flags[theme];
 		int length = 0;
-		do { 
+		while (current_flag.next != NULL) { 
 			length += current_flag.count; current_flag = *current_flag.next; 
-		} while (current_flag.next != NULL);
+		}
 		current_flag = flags[theme];
 		float step = screen_h/length;
 		float current_pos = 0;
-		do {
+		while (current_flag.next != NULL) {
 			pax_simple_rect(&buf, current_flag.color, 0, current_pos, screen_w, step*current_flag.count);
 			current_pos += step*current_flag.count;
 			current_flag = *current_flag.next;
-		} while (current_flag.next != NULL);
+		} 
 		
 		char* text = read_nickname();
         const pax_font_t *font = pax_font_saira_condensed;
