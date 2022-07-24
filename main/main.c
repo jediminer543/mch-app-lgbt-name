@@ -18,60 +18,60 @@ typedef enum { LGBT_THEME_GAY = 0, LGBT_THEME_LES, LGBT_THEME_TRA, LGBT_THEME_BI
 typedef struct lgbt_flag {
 	pax_col_t 	color;
 	int 		count;
-	lgbt_flag*	next;
+	struct lgbt_flag*	next;
 } lgbt_flag_t;
 
-pax_col_t[] gay = { 
+pax_col_t gay[] = { 
 	pax_col_rgb(209, 34, 41), pax_col_rgb(246, 138, 30),
 	pax_col_rgb(253, 224, 26), pax_col_rgb(0, 121, 64),
 	pax_col_rgb(36, 64, 142), pax_col_rgb(115, 41, 130)
 };
 
-pax_col_t[] les = { 
+pax_col_t les[] = { 
 	pax_col_rgb(213, 45, 0), pax_col_rgb(239, 118, 39),
 	pax_col_rgb(255, 154, 86), pax_col_rgb(255, 255, 255),
 	pax_col_rgb(209, 98, 164), pax_col_rgb(181, 86, 144),
 	pax_col_rgb(163, 2, 98)
 };
 
-pax_col_t[] tra = { 
+pax_col_t tra[] = { 
 	pax_col_rgb(91, 206, 250),
 	pax_col_rgb(245, 169, 184),
 	pax_col_rgb(255, 255, 255)
 };
 
-pax_col_t[] bis = { 
+pax_col_t bis[] = { 
 	pax_col_rgb(214, 2, 112),
 	pax_col_rgb(155, 79, 150),
 	pax_col_rgb(0, 56, 168)
 };
 
-lgbt_flag_t gay_flag = { gay[5], 1, NULL };
-gay_flag = { gay[4], 1, &gay_flag };
-gay_flag = { gay[3], 1, &gay_flag };
-gay_flag = { gay[2], 1, &gay_flag };
-gay_flag = { gay[1], 1, &gay_flag };
-gay_flag = { gay[0], 1, &gay_flag };
+lgbt_flag_t gay_flag_1 = { gay[5], 1, NULL };
+lgbt_flag_t gay_flag_2 = { gay[4], 1, &gay_flag_1 };
+lgbt_flag_t gay_flag_3 = { gay[3], 1, &gay_flag_2 };
+lgbt_flag_t gay_flag_4 = { gay[2], 1, &gay_flag_3 };
+lgbt_flag_t gay_flag_5 = { gay[1], 1, &gay_flag_4 };
+lgbt_flag_t gay_flag = { gay[0], 1, &gay_flag_5 };
 
-lgbt_flag_t les_flag = { les[6], 1, NULL };
-les_flag = { les[5], 1, &les_flag };
-les_flag = { les[4], 1, &les_flag };
-les_flag = { les[3], 1, &les_flag };
-les_flag = { les[2], 1, &les_flag };
-les_flag = { les[1], 1, &les_flag };
-les_flag = { les[0], 1, &les_flag };
+lgbt_flag_t les_flag_1 = { les[6], 1, NULL };
+lgbt_flag_t les_flag_2 = { les[5], 1, &les_flag_1 };
+lgbt_flag_t les_flag_3 = { les[4], 1, &les_flag_2 };
+lgbt_flag_t les_flag_4 = { les[3], 1, &les_flag_3 };
+lgbt_flag_t les_flag_5 = { les[2], 1, &les_flag_4 };
+lgbt_flag_t les_flag_6 = { les[1], 1, &les_flag_5 };
+lgbt_flag_t les_flag = { les[0], 1, &les_flag_6 };
 
-lgbt_flag_t tra_flag = { tra[0], 1, NULL };
-tra_flag = { tra[1], 1, &tra_flag };
-tra_flag = { tra[2], 1, &tra_flag };
-tra_flag = { tra[1], 1, &tra_flag };
-tra_flag = { tra[0], 1, &tra_flag };
+lgbt_flag_t tra_flag_1 = { tra[0], 1, NULL };
+lgbt_flag_t tra_flag_2 = { tra[1], 1, &tra_flag_1 };
+lgbt_flag_t tra_flag_3 = { tra[2], 1, &tra_flag_2 };
+lgbt_flag_t tra_flag_4 = { tra[1], 1, &tra_flag_3 };
+lgbt_flag_t tra_flag = { tra[0], 1, &tra_flag_4 };
 
-lgbt_flag_t bis_flag = { bis[2], 2, NULL };
-bis_flag = { bis[1], 1, &bis_flag };
-bis_flag = { bis[0], 2, &bis_flag };
+lgbt_flag_t bis_flag_1 = { bis[2], 2, NULL };
+lgbt_flag_t bis_flag_2 = { bis[1], 1, &bis_flag_1 };
+lgbt_flag_t bis_flag = { bis[0], 2, &bis_flag_2 };
 
-const lgbt_flag_t[] flags = {
+const lgbt_flag_t flags[] = {
 	gay_flag,
 	les_flag,
 	tra_flag,
@@ -79,7 +79,7 @@ const lgbt_flag_t[] flags = {
 }
 
 #include <esp_log.h>
-static const char *TAG = "MCH LGBTQ+ ";
+static const char *TAG = "MCH-LGBTQ-Nametag";
 
 // From: https://github.com/badgeteam/mch2022-firmware-esp32/blob/9aceecb2be831289d9ac4b80afe07d5dc7910523/main/nametag.c#L28
 #define SLEEP_DELAY 10000
@@ -132,7 +132,7 @@ void app_main() {
     bsp_rp2040_init();
     
     // This queue is used to receive button presses.
-    buttonQueue = get_rp2040()->queue;
+    button_queue = get_rp2040()->queue;
     
 	float screen_w = 320;
     float	screen_h = 240;
@@ -155,14 +155,17 @@ void app_main() {
         
         lgbt_flag_t current_flag = flags[theme];
 		int length = 0;
-		do { length += current_flag.count } while ((current_flag = current_flag.next) != NULL);
+		do { 
+			length += current_flag.count; current_flag = *current_flag.next; 
+		} while (current_flag.next != NULL);
 		current_flag = flags[theme];
 		float step = screen_h/length;
 		float current_pos = 0;
 		do {
 			pax_simple_rect(&buf, current_flag.color, 0, current_pos, screen_w, step*current_flag.count);
 			current_pos += step*current_flag.count;
-		} while ((current_flag = current_flag.next) != NULL);
+			current_flag = *current_flag.next;
+		} while (current_flag.next != NULL);
 		
 		char* text = read_nickname();
         const pax_font_t *font = pax_font_saira_condensed;
@@ -190,7 +193,7 @@ void app_main() {
                 switch (msg.input) {
                     case RP2040_INPUT_BUTTON_BACK:
                     case RP2040_INPUT_BUTTON_HOME:
-                        quit = true;
+                        exit_to_launcher();
                         break;
                     //case RP2040_INPUT_BUTTON_MENU:
                     //    edit_nickname(button_queue, pax_buffer, ili9341);
@@ -205,7 +208,7 @@ void app_main() {
                 }
             }
 		}
-		sleep_time = esp_timer_get_time() / 1000 + SLEEP_DELAY;
-		ESP_LOGI(TAG, "Recheduled sleep in %d millis", SLEEP_DELAY);
+		//uint64_t sleep_time = esp_timer_get_time() / 1000 + SLEEP_DELAY;
+		//ESP_LOGI(TAG, "Recheduled sleep in %d millis", SLEEP_DELAY);
     }
 }
