@@ -157,7 +157,7 @@ void app_main() {
         pax_background(&buf, col);
         
         lgbt_flag_t current_flag = flags[theme];
-		int length = 0;
+		int length = 2;
 		while (1) { 
 			length += current_flag.count; 
 			if (current_flag.next == NULL) {
